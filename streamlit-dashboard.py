@@ -8,7 +8,6 @@ option_state = ["new_york","boston","massachusetts"]
 
 def dynamic_label_reader(requestGap):
     counter = counter+1
-
     if counter % requestGap==0:
         data = pd.DataFrame({'Category': ['positive', 'negative', 'neutral'], 'value': [positive, negative, neutral]})
 
@@ -19,7 +18,7 @@ def dynamic_label_reader(requestGap):
 
 
 def statewise_customer_reviews_report_helper():
-    option_state = ["new_york","boston","massachusetts"]
+    st.header("Sate Wise Customer Reviews")
     option = st.selectbox('Select the state', option_state)
     dataframe_address = "data/" + option + ".csv"
     state_df = pd.read_csv(dataframe_address)
@@ -30,6 +29,7 @@ def statewise_customer_reviews_report_helper():
         segregate_lables_and_generate_graph("Statewise graph",state_df)
 
 def reveiews_per_state():
+    st.header("Number of Reviews per state")
     map_id_review_map = {}
     for option in option_state:
         
@@ -48,6 +48,7 @@ def reveiews_per_state():
 # Render the chart using altair_chart in Streamlit
 
 def user_wise_customer_review_report_helper():
+    st.header("Reviews per User")
     state_option = st.selectbox('Select the state for the user wise report', option_state)
     dataframe_address = "data/" + state_option + ".csv"
     state_df = pd.read_csv(dataframe_address)
@@ -60,6 +61,8 @@ def user_wise_customer_review_report_helper():
     segregate_lables_and_generate_graph("User graph",user_db)
 
 def business_wise_customer_review_report(): #List of Business Names
+    st.header("Reviews per Business")
+
     state_option = st.selectbox('Select the state for the business wise report', option_state)
     dataframe_address = "data/" + state_option + ".csv"
     state_df = pd.read_csv(dataframe_address)
@@ -105,7 +108,7 @@ def main():
     # dynamic_label_reader()
     statewise_customer_reviews_report_helper()
     user_wise_customer_review_report_helper()
-    # business_wise_customer_review_report()
+    business_wise_customer_review_report()
     reveiews_per_state()
 
 if __name__ == '__main__':
