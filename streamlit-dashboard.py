@@ -1,25 +1,16 @@
 import streamlit as st
 import pandas as pd
 import altair as alt
+import time 
+import numpy as np
 
 color_mapping = {'negative': 'red', 'neutral': 'blue', 'positive': 'green'}
 option_state = ["new_york","boston","massachusetts"]
 
 
-def dynamic_label_reader(requestGap):
-    counter = counter+1
-    if counter % requestGap==0:
-        data = pd.DataFrame({'Category': ['positive', 'negative', 'neutral'], 'value': [positive, negative, neutral]})
-
-    # create a bar chart using Altair
-        chart = alt.Chart(data).mark_bar().encode(x='category', y='value')
-        st.altair_chart(chart, use_container_width=True)
-
-
-
 def statewise_customer_reviews_report_helper():
     st.header("Sate Wise Customer Reviews")
-    option = st.selectbox('Select the state', option_state)
+    option = st.selectbox('Select the state', option_state,key=str(np.random.randn(10, 2)))
     dataframe_address = "data/" + option + ".csv"
     state_df = pd.read_csv(dataframe_address)
 
@@ -49,11 +40,11 @@ def reveiews_per_state():
 
 def user_wise_customer_review_report_helper():
     st.header("Reviews per User")
-    state_option = st.selectbox('Select the state for the user wise report', option_state)
+    state_option = st.selectbox('Select the state for the user wise report', option_state,key=str(np.random.randn(10, 2)))
     dataframe_address = "data/" + state_option + ".csv"
     state_df = pd.read_csv(dataframe_address)
 
-    option_user = st.selectbox('Selected user id', state_df['user_id'].unique()) #List of userId
+    option_user = st.selectbox('Selected user id', state_df['user_id'].unique(),key=str(np.random.randn(10, 2))) #List of userId
 
     # print the selected option
     st.write('Selected User id:', option_user)
@@ -63,10 +54,10 @@ def user_wise_customer_review_report_helper():
 def business_wise_customer_review_report(): #List of Business Names
     st.header("Reviews per Business")
 
-    state_option = st.selectbox('Select the state for the business wise report', option_state)
+    state_option = st.selectbox('Select the state for the business wise report', option_state,key=str(np.random.randn(10, 2)))
     dataframe_address = "data/" + state_option + ".csv"
     state_df = pd.read_csv(dataframe_address)
-    option = st.selectbox('Select Business', state_df['business_id'].unique())
+    option = st.selectbox('Select Business', state_df['business_id'].unique(),key=str(np.random.randn(10, 2)))
     # print the selected option
     st.write('Selected business id:', option)
     business_db = state_df[state_df['business_id'] == option]
@@ -105,11 +96,14 @@ def segregate_lables_and_generate_graph(graphHeading,dataFrame = None ):
 
 
 def main():
-    # dynamic_label_reader()
-    statewise_customer_reviews_report_helper()
-    user_wise_customer_review_report_helper()
-    business_wise_customer_review_report()
-    reveiews_per_state()
+    
+        statewise_customer_reviews_report_helper()
+        user_wise_customer_review_report_helper()
+        business_wise_customer_review_report()
+        reveiews_per_state()
+        time.sleep(15)
+        st.experimental_rerun()
+
 
 if __name__ == '__main__':
     global counter
@@ -121,5 +115,5 @@ if __name__ == '__main__':
     neural_counter = 0
     counter = 0
 
-    print("Starting the graph generation")
+    print("Reloading the Server for new data")
     main()
