@@ -22,25 +22,28 @@ id2label = {0: 'positive', 1: 'negative', 2: 'neutral'}
 def predict(text):
     encoding = tokenizer(text, return_tensors="pt")
     
+    # making prediciton
     outputs = model(input_ids=encoding['input_ids'], attention_mask=encoding['attention_mask'])
     
+    # getting logits and converting them to probs
     logits = outputs.logits
-    
     sigmoid = torch.nn.Sigmoid()
     probs = sigmoid(logits.squeeze().cpu())
     predictions = np.zeros(probs.shape)
     
+    # getting predictions greater than threshold
     threshold = 0.5
     predicted_labels = []
-    
     while not predicted_labels and threshold > 0:
         predictions[np.where(probs >= threshold)] = 1
         # turn predicted id's into actual label names
         predicted_labels = [id2label[idx] for idx, label in enumerate(predictions) if label == 1.0]
         print(predicted_labels, threshold)
         
+        # looping through again if no label found
         threshold -= 0.1
     
+    # returning labels
     if predicted_labels:
         return predicted_labels[0]
     else:
