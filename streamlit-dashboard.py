@@ -4,8 +4,8 @@ import altair as alt
 import time 
 import numpy as np
 
-color_mapping = {'negative': 'red', 'neutral': 'blue', 'positive': 'green'}
-option_state = ["new_york","boston","massachusetts"]
+color_mapping = {'negative': 'red', 'neutral': 'blue', 'positive': 'green'} #Color coding for the possible label output
+option_state = ["new_york","boston","massachusetts"] #List of states present in the dataset
 
 
 def statewise_customer_reviews_report_helper():
